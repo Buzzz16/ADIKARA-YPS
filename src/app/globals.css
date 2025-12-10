@@ -1,42 +1,238 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Common Base Settings */
+  --primary-hue: 250;
+  --secondary-hue: 320;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --max-width: 1280px;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* 1. DARK MODE (DEFAULT) */
+[data-theme='dark'] {
+  --bg-dark: #0a0a0f;
+  --bg-panel: rgba(255, 255, 255, 0.05);
+  --bg-panel-hover: rgba(255, 255, 255, 0.08);
+
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
+
+  --accent-primary: hsl(var(--primary-hue), 80%, 65%);
+  --accent-secondary: hsl(var(--secondary-hue), 80%, 60%);
+  --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+  --success: #00d26a;
+  --warning: #f5a623;
+  --error: #f03e3e;
+}
+
+/* 2. LIGHT MODE */
+/* 2. LIGHT MODE (Now Customized to Grey) */
+/* 2. LIGHT MODE (Standard) */
+[data-theme='light'] {
+  --bg-dark: #f8f9fa;
+  /* Light Grayish background */
+  --bg-panel: rgba(255, 255, 255, 0.7);
+  --bg-panel-hover: #ffffff;
+
+  --text-primary: #1a1a2e;
+  --text-secondary: #4a4a5e;
+  --text-muted: #7a7a8e;
+
+  --accent-primary: hsl(var(--primary-hue), 70%, 55%);
+  --accent-secondary: hsl(var(--secondary-hue), 70%, 50%);
+  --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+  --success: #008f45;
+  --warning: #cc8200;
+  --error: #c92a2a;
+}
+
+/* 3. LARGE MODE (Grey High Contrast for Accessibility) */
+[data-theme='large'] {
+  --bg-dark: #4a4a55;
+  /* Mid-Grey for visual comfort */
+  --bg-panel: #3a3a45;
+  /* Solid dark-grey panel */
+  --bg-panel-hover: #5a5a65;
+
+  --text-primary: #ffffff;
+  /* White text for contrast */
+  --text-secondary: #e0e0e0;
+  --text-muted: #cccccc;
+
+  /* High Contrast Accents */
+  --accent-primary: #9090ff;
+  --accent-secondary: #ff90ff;
+  --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+
+  --glass-border: #ffffff;
+  /* White border for clear separation */
+  --glass-shadow: none;
+
+  --success: #66ff66;
+  --warning: #ffcc00;
+  --error: #ff5555;
+
+  /* Override Fonts */
+  --font-sans: 'Arial', sans-serif;
+}
+
+/* Theme-specific body/html overrides */
+[data-theme='large'] body {
+  font-size: 130%;
+  /* 30% larger text base */
+  line-height: 1.8;
+}
+
+[data-theme='large'] .glass-panel {
+  backdrop-filter: none;
+  /* remove blur for clarity */
+  -webkit-backdrop-filter: none;
+  border-width: 2px;
+  /* Thicker borders */
+}
+
+/* Reset & Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html,
 body {
-  max-width: 100vw;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.6;
   overflow-x: hidden;
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Ambient logic: Only show ambient glow in Dark/Light, HIDE in Large for clarity */
+[data-theme='dark'] body::before,
+[data-theme='dark'] body::after,
+[data-theme='light'] body::before,
+[data-theme='light'] body::after {
+  content: '';
+  position: fixed;
+  width: 60%;
+  height: 60%;
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(80px);
+  opacity: 0.6;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+[data-theme='dark'] body::before {
+  top: -20%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(100, 50, 255, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
 }
+
+[data-theme='dark'] body::after {
+  bottom: -20%;
+  right: -10%;
+  background: radial-gradient(circle, rgba(255, 50, 150, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
+}
+
+[data-theme='light'] body::before {
+  top: -20%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(100, 50, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+}
+
+[data-theme='light'] body::after {
+  bottom: -20%;
+  right: -10%;
+  background: radial-gradient(circle, rgba(255, 50, 150, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+}
+
 
 a {
   color: inherit;
   text-decoration: none;
+  transition: opacity 0.2s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+/* Utility Classes */
+.glass-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius-md);
+}
+
+[data-theme='dark'] .glass-panel,
+[data-theme='light'] .glass-panel {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-button {
+  background: var(--accent-gradient);
+  color: white;
+  /* Always white on buttons usually ok, unless Large Mode overrides */
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+[data-theme='large'] .glass-button {
+  border: 2px solid #fff;
+  font-size: 1.1rem;
+  box-shadow: none;
+}
+
+.glass-button:hover {
+  transform: translateY(-2px);
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.title-gradient {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-responsive {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
 }

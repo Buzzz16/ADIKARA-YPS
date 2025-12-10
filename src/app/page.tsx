@@ -1,66 +1,71 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Link from 'next/link';
+import Navbar from '@/components/Navbar';
+import styles from './page.module.css';
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className={styles.main}>
+      <Navbar />
+
+      <section className={styles.hero}>
+        <div className={styles.heroContent}>
+          <h1 className={styles.title}>
+            Sampaikan Aspirasi<br />
+            <span className="title-gradient">Wujudkan Perubahan</span>
+          </h1>
+          <p className={styles.subtitle}>
+            Layanan pengaduan masyarakat yang transparan dan terpercaya.
+            Hubungkan aspirasi Anda langsung dengan pihak yang berwenang.
           </p>
+          <div className={styles.ctaGroup}>
+            <Link href="/masyarakat/lapor" className="glass-button">
+              Lapor Sekarang
+            </Link>
+            <Link href="#cara-kerja" style={{
+              padding: '0.75rem 1.5rem',
+              borderRadius: '9999px',
+              border: '1px solid var(--glass-border)',
+              fontWeight: 600
+            }}>
+              Pelajari Cara Kerja
+            </Link>
+          </div>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section className={styles.features} id="fitur">
+        <div className="container">
+          <div className="grid-responsive">
+            <div className={`glass-panel ${styles.featureCard}`}>
+              <div className={styles.featureIcon}>📝</div>
+              <h3>Tulis Laporan</h3>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                Laporkan keluhan atau aspirasi Anda dengan jelas dan lampirkan bukti pendukung.
+              </p>
+            </div>
+            <div className={`glass-panel ${styles.featureCard}`}>
+              <div className={styles.featureIcon}>🔍</div>
+              <h3>Proses Verifikasi</h3>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                Laporan Anda akan diverifikasi oleh admin dan diteruskan kepada dosen terkait.
+              </p>
+            </div>
+            <div className={`glass-panel ${styles.featureCard}`}>
+              <div className={styles.featureIcon}>✅</div>
+              <h3>Tindak Lanjut</h3>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                Pantau progres penyelesaian masalah secara realtime melalui dashboard.
+              </p>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <footer className={styles.footer}>
+        <div className="container">
+          <p>© 2024 Sistem Pengaduan Masyarakat. All rights reserved.</p>
+        </div>
+      </footer>
+    </main>
   );
 }
