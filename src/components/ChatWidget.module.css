@@ -1,17 +1,80 @@
-.chatContainer {
+.widgetWrapper {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 50;
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
+}
+
+.toggleButton {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggleButton:hover {
+    transform: scale(1.1);
+}
+
+.chatContainer {
+    display: none;
+    /* Hidden by default */
+    flex-direction: column;
+    width: 350px;
     height: 500px;
     background: var(--bg-panel);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-md);
     overflow: hidden;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.open .chatContainer {
+    display: flex;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .header {
     padding: 1rem;
     border-bottom: 1px solid var(--glass-border);
     background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.closeBtn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.5rem;
 }
 
 .messages {
@@ -34,6 +97,7 @@
     align-self: flex-start;
     background: rgba(255, 255, 255, 0.1);
     border-bottom-left-radius: 2px;
+    color: var(--text-primary);
 }
 
 .sent {
@@ -57,4 +121,16 @@
     border: 1px solid var(--glass-border);
     background: rgba(0, 0, 0, 0.2);
     color: white;
+}
+
+@media (max-width: 768px) {
+    .widgetWrapper {
+        bottom: 1rem;
+        right: 1rem;
+    }
+
+    .chatContainer {
+        width: calc(100vw - 2rem);
+        height: 60vh;
+    }
 }

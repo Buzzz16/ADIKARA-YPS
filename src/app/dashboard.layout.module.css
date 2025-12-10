@@ -10,3 +10,14 @@
     max-width: 1200px;
     margin: 0 auto;
 }
+
+@media (max-width: 768px) {
+    .container {
+        padding-left: 0;
+    }
+
+    .content {
+        padding: 5rem 1rem 2rem;
+        /* Add top padding for the toggle button */
+    }
+}

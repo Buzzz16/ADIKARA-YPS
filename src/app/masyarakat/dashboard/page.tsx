@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import ComplaintCard from '@/components/ComplaintCard';
+import ChatWidget from '@/components/ChatWidget'; // Import ChatWidget
 import styles from './page.module.css';
 
 // Dummy data
@@ -10,7 +11,9 @@ const complaints = [
         category: 'Infrastruktur',
         date: '10 Des 2024',
         status: 'pending' as const,
-        preview: 'Terdapat lubang besar yang membahayakan pengendara motor di depan toko ABC.'
+        preview: 'Terdapat lubang besar yang membahayakan pengendara motor di depan toko ABC.',
+        isVerified: false,
+        dosen: null
     },
     {
         id: '2',
@@ -18,7 +21,9 @@ const complaints = [
         category: 'Lingkungan',
         date: '08 Des 2024',
         status: 'processing' as const,
-        preview: 'Sampah belum diangkut selama 3 hari, menimbulkan bau tidak sedap.'
+        preview: 'Sampah belum diangkut selama 3 hari, menimbulkan bau tidak sedap.',
+        isVerified: true,
+        dosen: 'Dr. Budi (Teknik Lingkungan)'
     },
     {
         id: '3',
@@ -26,11 +31,17 @@ const complaints = [
         category: 'Infrastruktur',
         date: '01 Des 2024',
         status: 'completed' as const,
-        preview: 'Lampu penerangan jalan di sektor 5 mati total.'
+        preview: 'Lampu penerangan jalan di sektor 5 mati total.',
+        isVerified: true,
+        dosen: 'Prof. Andi (Teknik Elektro)'
     }
 ];
 
 export default function MasyarakatDashboard() {
+    // Check if there is any complaint that is verified AND has a dosen assigned
+    // In a real app, you might pick a specific active complaint or list chats
+    const activeChatComplaint = complaints.find(c => c.isVerified && c.dosen && c.status !== 'completed');
+
     return (
         <div>
             <header className={styles.header}>
@@ -68,6 +79,11 @@ export default function MasyarakatDashboard() {
                     ))}
                 </div>
             </section>
+
+            {/* Conditionally Render Chat Layout */}
+            {activeChatComplaint && (
+                <ChatWidget title={`Chat: ${activeChatComplaint.dosen}`} />
+            )}
         </div>
     );
 }

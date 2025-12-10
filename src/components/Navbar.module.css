@@ -60,3 +60,26 @@
     background: var(--bg-panel-hover);
     transform: translateY(-1px);
 }
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 1.25rem;
+        height: 70px;
+    }
+
+    .navLinks {
+        gap: 1rem;
+    }
+
+    /* Hide less important links on mobile if space is tight, or just reduce spacing/size */
+    .link {
+        display: none;
+        /* Simplest approach for now to fit logo and login */
+    }
+
+    /* Consider keeping just the "Masuk" button or icon */
+    .loginBtn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}

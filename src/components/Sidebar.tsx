@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import styles from './Sidebar.module.css';
 
 interface SidebarProps {
@@ -10,6 +11,7 @@ interface SidebarProps {
 
 export default function Sidebar({ role }: SidebarProps) {
     const pathname = usePathname();
+    const [isOpen, setIsOpen] = useState(false);
 
     const links = role === 'masyarakat' ? [
         { href: '/masyarakat/dashboard', label: 'Dashboard', icon: '📊' },
@@ -21,44 +23,62 @@ export default function Sidebar({ role }: SidebarProps) {
     ];
 
     return (
-        <aside className={styles.sidebar}>
-            <Link href="/" className={styles.brand} style={{ textDecoration: 'none' }}>
-                <div style={{ width: 24, height: 24, background: 'var(--accent-gradient)', borderRadius: 6 }}></div>
-                SuaraKita
-            </Link>
+        <>
+            <button
+                className={styles.mobileToggle}
+                onClick={() => setIsOpen(!isOpen)}
+                aria-label="Toggle Sidebar"
+            >
+                {isOpen ? '✕' : '☰'}
+            </button>
 
-            <nav className={styles.nav}>
-                {links.map((link) => {
-                    const isActive = pathname === link.href;
-                    return (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            className={`${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
-                        >
-                            <span>{link.icon}</span>
-                            {link.label}
+            {isOpen && (
+                <div
+                    className={styles.overlay}
+                    onClick={() => setIsOpen(false)}
+                />
+            )}
+
+            <aside className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}>
+                <Link href="/" className={styles.brand} style={{ textDecoration: 'none' }}>
+                    <div style={{ width: 24, height: 24, background: 'var(--accent-gradient)', borderRadius: 6 }}></div>
+                    SuaraKita
+                </Link>
+
+                <nav className={styles.nav}>
+                    {links.map((link) => {
+                        const isActive = pathname === link.href;
+                        return (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={`${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
+                                onClick={() => setIsOpen(false)} // Close on click (mobile)
+                            >
+                                <span>{link.icon}</span>
+                                {link.label}
+                            </Link>
+                        );
+                    })}
+
+                    <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--glass-border)' }}>
+                        <Link href="/" className={styles.navItem}>
+                            <span>🏠</span>
+                            Kembali ke Beranda
                         </Link>
-                    );
-                })}
+                    </div>
+                </nav>
 
-                <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--glass-border)' }}>
-                    <Link href="/" className={styles.navItem}>
-                        <span>🏠</span>
-                        Kembali ke Beranda
-                    </Link>
+                <div className={styles.userProfile}>
+                    <div className={styles.avatar}>
+                        {role === 'masyarakat' ? 'M' : 'D'}
+                    </div>
+                    <div className={styles.userInfo}>
+                        <h4>{role === 'masyarakat' ? 'Masyarakat' : 'Dosen'}</h4>
+                        <p>{role === 'masyarakat' ? 'Warga' : 'Fakultas Teknik'}</p>
+                    </div>
                 </div>
-            </nav>
-
-            <div className={styles.userProfile}>
-                <div className={styles.avatar}>
-                    {role === 'masyarakat' ? 'M' : 'D'}
-                </div>
-                <div className={styles.userInfo}>
-                    <h4>{role === 'masyarakat' ? 'Masyarakat' : 'Dosen'}</h4>
-                    <p>{role === 'masyarakat' ? 'Warga' : 'Fakultas Teknik'}</p>
-                </div>
-            </div>
-        </aside>
+            </aside>
+        </>
     );
 }
